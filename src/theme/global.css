@@ -1,0 +1,18 @@
+/* Échelle typographique de la charte */
+h1 { font-size: 32px; font-weight: 700; }
+h2 { font-size: 24px; font-weight: 600; }
+body, p { font-size: 16px; font-weight: 400; }
+.caption { font-size: 14px; color: var(--ion-color-medium); }
+
+/* Utilitaires */
+.page-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100%;
+  padding: 24px;
+}
+.link-text { color: var(--ion-color-tertiary); font-weight: 600; cursor: pointer; }
+.auth-title { margin: 8px 0 4px; }
+.auth-subtitle { color: var(--ion-color-medium); margin: 0 0 24px; }
+.form-field { margin-bottom: 14px; }
