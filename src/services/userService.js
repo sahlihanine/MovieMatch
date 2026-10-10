@@ -24,3 +24,7 @@ export const getUserProfile = async (uid) => {
 export const updateUserPhoto = async (uid, photoURL) => {
   await updateDoc(doc(db, COLLECTIONS.USERS, uid), { photoURL });
 };
+
+export const updateUserProfile = async (uid, data) => {
+  await updateDoc(doc(db, COLLECTIONS.USERS, uid), data);
+};

@@ -12,6 +12,8 @@ export const MATCH_THRESHOLD = 75; // % minimum exigé par le prof
 
 export const ROWS_PER_PAGE = 4;
 
+export const MIN_FAVORITES_FOR_MATCH = 3;
+
 export const ADMIN_MOVIE_PREFIX = "admin-";
 
 export const PLAYLIST_TYPES = {
