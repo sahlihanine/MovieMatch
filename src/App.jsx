@@ -41,8 +41,8 @@ const TabsLayout = () => (
     <IonRouterOutlet>
       <Route exact path="/app/home" component={Home} />
       <Route exact path="/app/playlist" component={Playlist} />
-      <Route exact path="/app/match" component={Match} />
-      <Route exact path="/app/match/results" component={MatchResults} />
+      <Route exact path="/app/match" component={MatchResults} />
+      <Route exact path="/app/match/:uid" component={Match} />
       <Route exact path="/app/profile" component={Profile} />
       <Route exact path="/app" render={() => <Redirect to="/app/home" />} />
     </IonRouterOutlet>
