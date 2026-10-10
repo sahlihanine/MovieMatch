@@ -44,30 +44,60 @@ const Onboarding = () => {
 
   return (
     <IonPage>
-      <IonContent fullscreen>
-        <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
-          <Swiper
-            modules={[Pagination]}
-            pagination={{ clickable: true }}
-            onSwiper={(s) => (swiperRef.current = s)}
-            onSlideChange={(s) => setIndex(s.activeIndex)}
-            style={{ flex: 1 }}
-          >
-            {slides.map((s) => (
-              <SwiperSlide key={s.title}>
-                <div style={{ padding: 32, textAlign: "center" }}>
-                  <div style={{
-                    width: 160, height: 160, borderRadius: "50%", margin: "0 auto 32px",
-                    background: "rgba(249,115,22,0.12)", display: "grid", placeItems: "center",
-                  }}>
-                    <IonIcon icon={s.icon} style={{ fontSize: 72 }} color="tertiary" />
+      <IonContent scrollY={false}>
+        {/* position absolute : le conteneur occupe tout l'écran, les hauteurs en % fonctionnent */}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <div style={{ flex: 1, minHeight: 0 }}>
+            <Swiper
+              modules={[Pagination]}
+              pagination={{ clickable: true }}
+              onSwiper={(s) => (swiperRef.current = s)}
+              onSlideChange={(s) => setIndex(s.activeIndex)}
+              style={{ height: "100%" }}
+            >
+              {slides.map((s) => (
+                <SwiperSlide key={s.title}>
+                  <div
+                    style={{
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: "0 32px 24px",
+                      textAlign: "center",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 160,
+                        height: 160,
+                        borderRadius: "50%",
+                        margin: "0 auto 32px",
+                        background: "rgba(249,115,22,0.12)",
+                        display: "grid",
+                        placeItems: "center",
+                      }}
+                    >
+                      <IonIcon icon={s.icon} style={{ fontSize: 72 }} color="tertiary" />
+                    </div>
+                    <h2>{s.title}</h2>
+                    <p className="caption">{s.text}</p>
                   </div>
-                  <h2>{s.title}</h2>
-                  <p className="caption">{s.text}</p>
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
 
           <div style={{ padding: "0 24px 32px" }}>
             <PrimaryButton onClick={next}>{isLast ? "Get Started" : "Next"}</PrimaryButton>
