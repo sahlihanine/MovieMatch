@@ -4,10 +4,10 @@ const Home = () => (
   <IonPage>
     <IonHeader>
       <IonToolbar>
-        <IonTitle>AdminUsers</IonTitle>
+        <IonTitle>MatchResults</IonTitle>
       </IonToolbar>
     </IonHeader>
-    <IonContent className="ion-padding">AdminUsers works</IonContent>
+    <IonContent className="ion-padding">MatchResults works</IonContent>
   </IonPage>
 );
 
