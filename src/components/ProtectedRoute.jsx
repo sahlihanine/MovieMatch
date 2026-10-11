@@ -3,7 +3,9 @@ import { IonSpinner } from "@ionic/react";
 import { useAuth } from "../hooks/useAuth";
 import { ROLES } from "../utils/constants";
 
-const ProtectedRoute = ({ children, adminOnly = false }) => {
+// adminOnly : réservé aux admins
+// userOnly  : réservé aux utilisateurs (un admin est renvoyé vers son espace)
+const ProtectedRoute = ({ children, adminOnly = false, userOnly = false }) => {
   const { user, profile, loading } = useAuth();
 
   if (loading) {
@@ -14,7 +16,10 @@ const ProtectedRoute = ({ children, adminOnly = false }) => {
     );
   }
   if (!user) return <Redirect to="/login" />;
-  if (adminOnly && profile?.role !== ROLES.ADMIN) return <Redirect to="/app/home" />;
+
+  const isAdmin = profile?.role === ROLES.ADMIN;
+  if (adminOnly && !isAdmin) return <Redirect to="/app/home" />;
+  if (userOnly && isAdmin) return <Redirect to="/admin/users" />;
 
   return children;
 };

@@ -17,6 +17,7 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 import "./theme/global.css";
 
+
 import ProtectedRoute from "./components/ProtectedRoute";
 
 import Splash from "./pages/Splash/Splash";
@@ -32,6 +33,7 @@ import MatchResults from "./pages/MatchResults/MatchResults";
 import Profile from "./pages/Profile/Profile";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminAddMovie from "./pages/admin/AdminAddMovie";
+import AdminMovies from "./pages/admin/AdminMovies";
 
 setupIonicReact();
 
@@ -78,15 +80,15 @@ const App = () => (
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
 
-        {/* Protégées (utilisateur connecté) */}
+        {/* Utilisateurs uniquement (un admin est redirigé vers /admin/users) */}
         <Route exact path="/profile-photo" render={() => (
-          <ProtectedRoute><ProfilePhoto /></ProtectedRoute>
+          <ProtectedRoute userOnly><ProfilePhoto /></ProtectedRoute>
         )} />
         <Route exact path="/movie/:id" render={() => (
-          <ProtectedRoute><MovieDetails /></ProtectedRoute>
+          <ProtectedRoute userOnly><MovieDetails /></ProtectedRoute>
         )} />
         <Route path="/app" render={() => (
-          <ProtectedRoute><TabsLayout /></ProtectedRoute>
+          <ProtectedRoute userOnly><TabsLayout /></ProtectedRoute>
         )} />
 
         {/* Admin uniquement */}
@@ -95,6 +97,10 @@ const App = () => (
         )} />
         <Route exact path="/admin/add-movie" render={() => (
           <ProtectedRoute adminOnly><AdminAddMovie /></ProtectedRoute>
+        )} />
+
+        <Route exact path="/admin/movies" render={() => (
+          <ProtectedRoute adminOnly><AdminMovies /></ProtectedRoute>
         )} />
 
         <Route exact path="/" render={() => <Redirect to="/splash" />} />

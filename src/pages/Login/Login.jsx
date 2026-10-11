@@ -9,7 +9,9 @@ import PrimaryButton from "../../components/PrimaryButton";
 import {
   loginUser, loginWithGoogle, resetPassword, getAuthErrorMessage,
 } from "../../services/authService";
+import { getUserProfile } from "../../services/userService";
 import { isEmail } from "../../utils/validators";
+import { ROLES } from "../../utils/constants";
 
 const Login = () => {
   const history = useHistory();
@@ -17,6 +19,12 @@ const Login = () => {
   const [presentLoading, dismissLoading] = useIonLoading();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  // redirection selon le rôle : admin → espace admin, utilisateur → home
+  const goHome = async (firebaseUser) => {
+    const p = await getUserProfile(firebaseUser.uid);
+    history.replace(p?.role === ROLES.ADMIN ? "/admin/users" : "/app/home");
+  };
 
   const showError = (message) =>
     presentAlert({ header: "Login failed", message, buttons: ["OK"] });
@@ -27,8 +35,8 @@ const Login = () => {
     }
     await presentLoading({ message: "Signing in..." });
     try {
-      await loginUser(email, password);
-      history.replace("/app/home");
+      const u = await loginUser(email, password);
+      await goHome(u);
     } catch (e) {
       showError(getAuthErrorMessage(e.code));
     } finally {
@@ -39,8 +47,8 @@ const Login = () => {
   const handleGoogle = async () => {
     await presentLoading({ message: "Signing in..." });
     try {
-      await loginWithGoogle();
-      history.replace("/app/home");
+      const u = await loginWithGoogle();
+      await goHome(u);
     } catch (e) {
       showError(getAuthErrorMessage(e.code));
     } finally {

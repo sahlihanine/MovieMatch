@@ -4,11 +4,11 @@ import { IonContent, IonIcon, IonPage, IonProgressBar } from "@ionic/react";
 import { filmOutline } from "ionicons/icons";
 import { Preferences } from "@capacitor/preferences";
 import { useAuth } from "../../hooks/useAuth";
-import { STORAGE_KEYS } from "../../utils/constants";
+import { ROLES, STORAGE_KEYS } from "../../utils/constants";
 
 const Splash = () => {
   const history = useHistory();
-  const { user, loading } = useAuth();
+  const { user, profile, loading } = useAuth();
   const [minTimePassed, setMinTimePassed] = useState(false);
 
   // durée minimale d'affichage du splash
@@ -17,16 +17,18 @@ const Splash = () => {
     return () => clearTimeout(t);
   }, []);
 
-  // redirection : connecté → home, sinon onboarding (1re fois) ou login
+  // redirection : admin → espace admin, utilisateur → home, sinon onboarding (1re fois) ou login
   useEffect(() => {
     if (!minTimePassed || loading) return;
     (async () => {
+      if (user) {
+        history.replace(profile?.role === ROLES.ADMIN ? "/admin/users" : "/app/home");
+        return;
+      }
       const { value } = await Preferences.get({ key: STORAGE_KEYS.ONBOARDING_SEEN });
-      if (user) history.replace("/app/home");
-      else if (value === "true") history.replace("/login");
-      else history.replace("/onboarding");
+      history.replace(value === "true" ? "/login" : "/onboarding");
     })();
-  }, [minTimePassed, loading, user, history]);
+  }, [minTimePassed, loading, user, profile, history]);
 
   return (
     <IonPage>

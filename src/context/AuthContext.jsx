@@ -24,6 +24,8 @@ export const AuthProvider = ({ children }) => {
         return;
       }
 
+      setLoading(true); // attend le profil avant de décider des accès (admin)
+
       unsubProfile = onSnapshot(
         doc(db, COLLECTIONS.USERS, firebaseUser.uid),
         (snap) => {
