@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { Capacitor } from "@capacitor/core";
 import {
   IonContent, IonIcon, IonInput, IonPage, IonText,
   useIonAlert, useIonLoading,
@@ -19,6 +20,9 @@ const Login = () => {
   const [presentLoading, dismissLoading] = useIonLoading();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  // le bouton Google n'existe que dans le navigateur (le popup ne marche pas dans l'app native)
+  const isNative = Capacitor.isNativePlatform();
 
   // redirection selon le rôle : admin → espace admin, utilisateur → home
   const goHome = async (firebaseUser) => {
@@ -108,12 +112,16 @@ const Login = () => {
 
           <PrimaryButton onClick={handleLogin}>Login</PrimaryButton>
 
-          <p className="caption" style={{ textAlign: "center", margin: "20px 0 8px" }}>
-            or continue with
-          </p>
-          <PrimaryButton fill="outline" color="medium" onClick={handleGoogle}>
-            <IonIcon slot="start" icon={logoGoogle} /> Google
-          </PrimaryButton>
+          {!isNative && (
+            <>
+              <p className="caption" style={{ textAlign: "center", margin: "20px 0 8px" }}>
+                or continue with
+              </p>
+              <PrimaryButton fill="outline" color="medium" onClick={handleGoogle}>
+                <IonIcon slot="start" icon={logoGoogle} /> Google
+              </PrimaryButton>
+            </>
+          )}
 
           <IonText>
             <p className="caption" style={{ textAlign: "center", marginTop: 24 }}>
