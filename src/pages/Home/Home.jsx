@@ -1,23 +1,21 @@
 import { useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import {
-  IonButton, IonButtons, IonContent, IonHeader, IonIcon,
+  IonContent, IonHeader, IonIcon,
   IonPage, IonSearchbar, IonTitle, IonToolbar,
 } from "@ionic/react";
-import { addCircleOutline, peopleOutline, playCircle } from "ionicons/icons";
+import { playCircle } from "ionicons/icons";
 import CategoryChips from "../../components/CategoryChips";
 import MovieGrid, { MovieGridSkeleton } from "../../components/MovieGrid";
 import Pagination from "../../components/Pagination";
 import { useGridColumns } from "../../hooks/useGridColumns";
 import { useMovies } from "../../hooks/useMovies";
 import { useFavorites } from "../../hooks/useFavorites";
-import { useAuth } from "../../hooks/useAuth";
-import { MOVIE_CATEGORIES, ROLES, ROWS_PER_PAGE } from "../../utils/constants";
+import { MOVIE_CATEGORIES, ROWS_PER_PAGE } from "../../utils/constants";
 
 const Home = () => {
   const history = useHistory();
   const contentRef = useRef(null);
-  const { profile } = useAuth();
   const { isFavorite, toggleFavorite } = useFavorites();
 
   const columns = useGridColumns();
@@ -28,7 +26,6 @@ const Home = () => {
   const { movies, loading, error, page, totalPages, goToPage } = useMovies(category, search, pageSize);
 
   const searching = search.trim().length >= 2;
-  const isAdmin = profile?.role === ROLES.ADMIN;
   const open = (id) => history.push(`/movie/${id}`);
 
   const scrollTop = () => contentRef.current?.scrollToTop(300);
@@ -52,16 +49,6 @@ const Home = () => {
       <IonHeader className="ion-no-border">
         <IonToolbar>
           <IonTitle>MovieMatch</IonTitle>
-          {isAdmin && (
-            <IonButtons slot="end">
-              <IonButton onClick={() => history.push("/admin/add-movie")}>
-                <IonIcon slot="icon-only" icon={addCircleOutline} />
-              </IonButton>
-              <IonButton onClick={() => history.push("/admin/users")}>
-                <IonIcon slot="icon-only" icon={peopleOutline} />
-              </IonButton>
-            </IonButtons>
-          )}
         </IonToolbar>
         <IonToolbar>
           <IonSearchbar

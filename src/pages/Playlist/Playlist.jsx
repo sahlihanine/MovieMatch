@@ -15,7 +15,7 @@ import { createPlaylist, removeMovieFromPlaylist } from "../../services/playlist
 const Playlist = () => {
   const history = useHistory();
   const { user } = useAuth();
-  const { playlists, loading, reload } = usePlaylists();
+  const { playlists, loading, error, reload } = usePlaylists();
   const [presentAlert] = useIonAlert();
 
   const [selectedId, setSelectedId] = useState(null);
@@ -96,6 +96,8 @@ const Playlist = () => {
             No movies in this playlist yet.<br />Browse the catalog and add some!
           </p>
         )}
+
+        {error && <p className="caption" style={{ textAlign: "center", padding: 16 }}>{error}</p>}
 
         <div className="movie-grid">
           {movies.map((m) => (
