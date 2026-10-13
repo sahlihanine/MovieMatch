@@ -1,3 +1,9 @@
+/* Largeur de l'application sur ordinateur (le hook useGridColumns lit cette valeur) */
+:root {
+  --app-max-width: 480px;
+  --desktop-backdrop: #ebe8f3;
+}
+
 /* Échelle typographique de la charte */
 h1 { font-size: 32px; font-weight: 700; }
 h2 { font-size: 24px; font-weight: 600; }
@@ -17,7 +23,7 @@ body, p { font-size: 16px; font-weight: 400; }
 .auth-subtitle { color: var(--ion-color-medium); margin: 0 0 24px; }
 .form-field { margin-bottom: 14px; }
 
-/* Grille de films : le nombre de colonnes s'adapte à la largeur de l'écran */
+/* Grille de films : le nombre de colonnes est fourni par useGridColumns */
 .movie-grid {
   display: grid;
   grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
@@ -30,4 +36,19 @@ body, p { font-size: 16px; font-weight: 400; }
 .page-container {
   max-width: 1100px;
   margin: 0 auto;
+}
+
+/* Ordinateur : l'application devient une colonne de type téléphone, centrée.
+   Ne s'applique pas en dessous de 768 px, donc aucun effet sur mobile. */
+@media (min-width: 768px) {
+  html body {
+    background: var(--desktop-backdrop);
+  }
+
+  ion-app {
+    max-width: var(--app-max-width);
+    margin: 0 auto;
+    background: var(--ion-background-color);
+    box-shadow: 0 0 48px rgba(31, 41, 55, 0.14);
+  }
 }
