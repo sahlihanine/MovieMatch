@@ -75,7 +75,10 @@ const AdminMovies = () => {
             <IonItem key={m.id} lines="full">
               <div
                 slot="start"
-                style={{ width: 56, height: 84, borderRadius: 6, overflow: "hidden", background: "#e5e7eb", margin: "8px 0" }}
+                style={{
+                  width: 64, height: 96, flexShrink: 0, margin: "10px 16px 10px 0",
+                  borderRadius: 8, overflow: "hidden", background: "#e5e7eb",
+                }}
               >
                 <img
                   src={m.posterURL}
@@ -86,7 +89,7 @@ const AdminMovies = () => {
               </div>
 
               <IonLabel className="ion-text-wrap">
-                <h3 style={{ fontWeight: 600 }}>{m.title}</h3>
+                <h3 style={{ fontWeight: 600, marginBottom: 4 }}>{m.title}</h3>
                 <p className="caption">
                   {[(m.releaseDate || "").slice(0, 4), m.genre].filter(Boolean).join(" · ")}
                 </p>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   IonButton, IonButtons, IonContent, IonHeader, IonInput, IonModal,
-  IonTitle, IonToolbar, useIonToast,
+  IonToolbar, useIonToast,
 } from "@ionic/react";
 import UserAvatar from "./UserAvatar";
 import { takePhoto, CameraSource } from "../services/cameraService";
@@ -59,7 +59,6 @@ const EditProfileModal = ({ isOpen, onClose, uid, profile }) => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start"><IonButton onClick={onClose}>Cancel</IonButton></IonButtons>
-          <IonTitle>Edit profile</IonTitle>
           <IonButtons slot="end"><IonButton strong disabled={saving} onClick={save}>Save</IonButton></IonButtons>
         </IonToolbar>
       </IonHeader>

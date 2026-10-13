@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import {
-  IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel,
-  IonList, IonPage, IonSpinner, IonTitle, IonToolbar, useIonAlert, useIonViewWillEnter,
+  IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonPage,
+  IonSpinner, IonTitle, IonToolbar, useIonAlert, useIonViewWillEnter,
 } from "@ionic/react";
 import {
-  addCircleOutline, heartOutline, helpCircleOutline, listOutline, logOutOutline,
-  peopleOutline, settingsOutline, shieldCheckmarkOutline,
+  addCircleOutline, createOutline, heartOutline, helpCircleOutline, listOutline,
+  logOutOutline, shieldCheckmarkOutline,
 } from "ionicons/icons";
 import EditProfileModal from "../../components/EditProfileModal";
 import UserAvatar from "../../components/UserAvatar";
@@ -78,7 +78,7 @@ const Profile = () => {
   const items = [
     { icon: listOutline, label: "My Playlist", action: () => history.push("/app/playlist") },
     { icon: heartOutline, label: "My Matches", action: () => history.push("/app/match") },
-    { icon: settingsOutline, label: "Settings", action: () => setEditOpen(true) },
+    { icon: createOutline, label: "Edit profile", action: () => setEditOpen(true) },
     { icon: helpCircleOutline, label: "Help & Support", action: showHelp },
     ...(isAdmin
       ? [
@@ -94,11 +94,6 @@ const Profile = () => {
       <IonHeader className="ion-no-border">
         <IonToolbar>
           <IonTitle>Profile</IonTitle>
-          <IonButtons slot="end">
-            <IonButton onClick={() => setEditOpen(true)}>
-              <IonIcon slot="icon-only" icon={settingsOutline} />
-            </IonButton>
-          </IonButtons>
         </IonToolbar>
       </IonHeader>
 

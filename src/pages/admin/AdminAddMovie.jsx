@@ -1,13 +1,15 @@
 import { useState } from "react";
 import {
-  IonButton, IonContent, IonInput, IonPage, IonSelect, IonSelectOption,
-  IonTextarea, useIonToast,
+  IonButton, IonContent, IonIcon, IonInput, IonPage, IonSelect,
+  IonSelectOption, IonTextarea, useIonToast,
 } from "@ionic/react";
+import { cameraOutline, closeCircle, imageOutline } from "ionicons/icons";
 import AdminHeader from "../../components/AdminHeader";
 import { useAuth } from "../../hooks/useAuth";
 import { addMovie } from "../../services/adminService";
+import { takePhoto, CameraSource } from "../../services/cameraService";
 import { GENRES } from "../../utils/constants";
-import { isUrl, minLength } from "../../utils/validators";
+import { minLength } from "../../utils/validators";
 
 const INITIAL = { title: "", description: "", releaseDate: "", genre: "", posterURL: "" };
 const GENRE_LIST = Object.values(GENRES);
@@ -22,12 +24,21 @@ const AdminAddMovie = () => {
   const toast = (message, color) =>
     presentToast({ message, duration: 2000, color, position: "top" });
 
+  const pickImage = async (source) => {
+    try {
+      const dataUrl = await takePhoto(source, 600);
+      setForm((f) => ({ ...f, posterURL: dataUrl }));
+    } catch {
+      /* l'admin a annulé : on ne fait rien */
+    }
+  };
+
   const validate = () => {
     if (!minLength(form.title, 2)) return "Title is required (2 characters minimum).";
     if (!minLength(form.description, 10)) return "Description must contain at least 10 characters.";
     if (!form.releaseDate) return "Please choose a release date.";
     if (!form.genre) return "Please choose a genre.";
-    if (!isUrl(form.posterURL)) return "Poster URL must be a valid http(s) link.";
+    if (!form.posterURL.startsWith("data:image/")) return "Please add a poster image.";
     return null;
   };
 
@@ -70,17 +81,35 @@ const AdminAddMovie = () => {
           ))}
         </IonSelect>
 
-        <IonInput className="form-field" label="Poster URL" labelPlacement="floating" fill="outline"
-          type="url" placeholder="https://..." value={form.posterURL} onIonInput={set("posterURL")} />
+        {/* Poster : image choisie dans la galerie ou prise avec la caméra */}
+        <p className="caption" style={{ margin: "4px 0 8px" }}>Poster image</p>
 
-        {isUrl(form.posterURL) && (
-          <img
-            key={form.posterURL}
-            src={form.posterURL}
-            alt="Poster preview"
-            onError={(e) => { e.currentTarget.style.display = "none"; }}
-            style={{ display: "block", height: 160, borderRadius: 8, margin: "0 auto 16px", objectFit: "cover" }}
-          />
+        {form.posterURL ? (
+          <div style={{ position: "relative", width: 134, margin: "0 auto 12px" }}>
+            <img
+              src={form.posterURL}
+              alt="Poster preview"
+              style={{ width: 134, height: 200, objectFit: "cover", borderRadius: 8, display: "block" }}
+            />
+            <IonButton
+              fill="clear" size="small" color="light" aria-label="Remove image"
+              style={{ position: "absolute", top: -6, right: -10, "--padding-start": 0, "--padding-end": 0 }}
+              onClick={() => setForm({ ...form, posterURL: "" })}
+            >
+              <IonIcon slot="icon-only" icon={closeCircle} style={{ color: "#ef4444", fontSize: 26 }} />
+            </IonButton>
+          </div>
+        ) : (
+          <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+            <IonButton expand="block" fill="outline" color="tertiary" shape="round" style={{ flex: 1 }}
+              onClick={() => pickImage(CameraSource.Photos)}>
+              <IonIcon slot="start" icon={imageOutline} /> Gallery
+            </IonButton>
+            <IonButton expand="block" fill="outline" color="tertiary" shape="round" style={{ flex: 1 }}
+              onClick={() => pickImage(CameraSource.Camera)}>
+              <IonIcon slot="start" icon={cameraOutline} /> Camera
+            </IonButton>
+          </div>
         )}
 
         <IonButton expand="block" shape="round" color="tertiary" disabled={saving} onClick={submit}>

@@ -11,6 +11,7 @@ import { usePlaylists } from "../../hooks/usePlaylists";
 import { useAuth } from "../../hooks/useAuth";
 import { getMoviesByIds } from "../../services/movieService";
 import { createPlaylist, removeMovieFromPlaylist } from "../../services/playlistService";
+import { useGridColumns } from "../../hooks/useGridColumns";
 
 const Playlist = () => {
   const history = useHistory();
@@ -25,6 +26,8 @@ const Playlist = () => {
   const selected = playlists.find((p) => p.id === selectedId) || playlists[0];
   // change quand on change de playlist OU quand son contenu change
   const contentKey = selected ? `${selected.id}:${selected.movieIds.join(",")}` : "";
+
+  const columns = useGridColumns();
 
   useEffect(() => {
     let cancelled = false;
@@ -99,7 +102,7 @@ const Playlist = () => {
 
         {error && <p className="caption" style={{ textAlign: "center", padding: 16 }}>{error}</p>}
 
-        <div className="movie-grid">
+        <div className="movie-grid" style={{ "--cols": columns }}>
           {movies.map((m) => (
             <MovieCard
               key={m.id}
