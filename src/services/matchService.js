@@ -40,9 +40,17 @@ export const findMatches = async (uid, myFavorites = []) => {
 /* Détail du match entre moi et un utilisateur précis (écran 12) */
 export const getMatchWith = async (myFavorites = [], otherUid) => {
   const snap = await getDoc(doc(db, COLLECTIONS.USERS, otherUid));
-  if (!snap.exists()) throw new Error("User not found");
+  // un compte inexistant ou désactivé n'est pas consultable
+  if (!snap.exists() || snap.data().isActive === false) throw new Error("User not found");
 
   const data = snap.data();
-  const { percentage, common } = computeMatch(myFavorites, data.favoriteMovieIds ?? []);
-  return { ...publicUser(snap.id, data), percentage, commonIds: common };
+  const favorites = data.favoriteMovieIds ?? [];
+  const { percentage, common } = computeMatch(myFavorites, favorites);
+
+  return {
+    ...publicUser(snap.id, data),
+    percentage,
+    commonIds: common,
+    favoriteMovieIds: favorites, // liste complète, sert aux recommandations
+  };
 };

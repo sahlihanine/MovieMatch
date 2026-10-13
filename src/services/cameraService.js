@@ -18,12 +18,12 @@ const resizeDataUrl = (dataUrl, maxSize = 400, quality = 0.7) =>
     img.src = dataUrl;
   });
 
-export const takePhoto = async (source = CameraSource.Camera) => {
+export const takePhoto = async (source = CameraSource.Camera, maxSize = 400) => {
   const photo = await Camera.getPhoto({
     quality: 70,
     allowEditing: false,
     resultType: CameraResultType.DataUrl,
     source, // Camera = prendre une photo, Photos = galerie
   });
-  return resizeDataUrl(photo.dataUrl);
+  return resizeDataUrl(photo.dataUrl, maxSize);
 };
