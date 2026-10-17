@@ -144,17 +144,20 @@ const AdminUsers = () => {
           ))}
         </div>
 
-        {/* filtre par date d'inscription + tri */}
+        {/* filtre par date d'inscription + tri :
+            interface "alert" = la liste s'ouvre au centre de la colonne, sans calcul de position */}
         <div style={{ display: "flex", gap: 8, padding: "8px 12px" }}>
           <IonSelect
             style={{ flex: 1 }} label="Registered" labelPlacement="stacked" fill="outline"
-            interface="popover" value={period} onIonChange={(e) => setPeriod(e.detail.value)}
+            interface="alert" interfaceOptions={{ header: "Registered" }}
+            value={period} onIonChange={(e) => setPeriod(e.detail.value)}
           >
             {PERIODS.map((p) => <IonSelectOption key={p.value} value={p.value}>{p.label}</IonSelectOption>)}
           </IonSelect>
           <IonSelect
             style={{ flex: 1 }} label="Sort by" labelPlacement="stacked" fill="outline"
-            interface="popover" value={sort} onIonChange={(e) => setSort(e.detail.value)}
+            interface="alert" interfaceOptions={{ header: "Sort by" }}
+            value={sort} onIonChange={(e) => setSort(e.detail.value)}
           >
             {SORTS.map((s) => <IonSelectOption key={s.value} value={s.value}>{s.label}</IonSelectOption>)}
           </IonSelect>

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { IonContent, IonIcon, IonPage, IonProgressBar } from "@ionic/react";
-import { filmOutline } from "ionicons/icons";
+import { IonContent, IonPage, IonProgressBar } from "@ionic/react";
 import { Preferences } from "@capacitor/preferences";
 import { useAuth } from "../../hooks/useAuth";
 import { ROLES, STORAGE_KEYS } from "../../utils/constants";
@@ -32,21 +31,23 @@ const Splash = () => {
 
   return (
     <IonPage>
-      <IonContent
-        fullscreen
-        style={{ "--background": "linear-gradient(180deg,#8b5a44,#3b2a22)" }}
-      >
+      <IonContent fullscreen style={{ "--background": "#060b13" }}>
         <div style={{
           height: "100%", display: "flex", flexDirection: "column",
-          alignItems: "center", justifyContent: "center", color: "#fff", textAlign: "center",
+          alignItems: "center", justifyContent: "center", textAlign: "center",
         }}>
-          <IonIcon icon={filmOutline} style={{ fontSize: 72, color: "#f97316" }} />
-          <h1 style={{ margin: "12px 0 4px" }}>MovieMatch</h1>
-          <p style={{ margin: 0, opacity: 0.85 }}>Movies bring people together</p>
+          <img
+            src="/logo.png"
+            alt="MovieMatch"
+            style={{ width: 168, height: 168, borderRadius: 38, boxShadow: "0 16px 48px rgba(0,0,0,0.5)" }}
+          />
+          <p style={{ margin: "20px 0 0", color: "rgba(255,255,255,0.75)", fontSize: 14 }}>
+            Movies bring people together
+          </p>
           <IonProgressBar
             type="indeterminate"
             color="tertiary"
-            style={{ width: 140, marginTop: 48 }}
+            style={{ width: 140, marginTop: 40 }}
           />
         </div>
       </IonContent>

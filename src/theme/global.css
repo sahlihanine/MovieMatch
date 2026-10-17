@@ -1,3 +1,9 @@
+/* Largeur de l'application sur ordinateur (le hook useGridColumns lit cette valeur) */
+:root {
+  --app-max-width: 480px;
+  --desktop-backdrop: #ebe8f3;
+}
+
 /* Échelle typographique de la charte */
 h1 { font-size: 32px; font-weight: 700; }
 h2 { font-size: 24px; font-weight: 600; }
@@ -17,7 +23,7 @@ body, p { font-size: 16px; font-weight: 400; }
 .auth-subtitle { color: var(--ion-color-medium); margin: 0 0 24px; }
 .form-field { margin-bottom: 14px; }
 
-/* Grille de films : le nombre de colonnes s'adapte à la largeur de l'écran */
+/* Grille de films : le nombre de colonnes est fourni par useGridColumns */
 .movie-grid {
   display: grid;
   grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
@@ -30,4 +36,74 @@ body, p { font-size: 16px; font-weight: 400; }
 .page-container {
   max-width: 1100px;
   margin: 0 auto;
+}
+
+/* Ordinateur : l'application devient une colonne de type téléphone, centrée.
+   Ne s'applique pas en dessous de 768 px, donc aucun effet sur mobile. */
+@media (min-width: 768px) {
+  html body {
+    background: var(--desktop-backdrop);
+  }
+
+  ion-app {
+    max-width: var(--app-max-width);
+    margin: 0 auto;
+    background: var(--ion-background-color);
+    box-shadow: 0 0 48px rgba(31, 41, 55, 0.14);
+  }
+}
+
+/* Barres de défilement masquées (le défilement reste possible au doigt, à la molette et au pavé tactile) */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+*::-webkit-scrollbar {
+  display: none;
+}
+/* le contenu des pages Ionic défile dans une zone interne, à cibler séparément */
+ion-content::part(scroll) {
+  scrollbar-width: none;
+}
+ion-content::part(scroll)::-webkit-scrollbar {
+  display: none;
+}
+
+/* Champs préremplis par le navigateur : on supprime le fond gris-bleu */
+ion-input input:-webkit-autofill,
+ion-input input:-webkit-autofill:hover,
+ion-input input:-webkit-autofill:focus,
+ion-input input:-webkit-autofill:active,
+ion-textarea textarea:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px var(--ion-background-color) inset !important;
+  box-shadow: 0 0 0 1000px var(--ion-background-color) inset !important;
+  -webkit-text-fill-color: var(--ion-text-color) !important;
+  caret-color: var(--ion-text-color);
+  transition: background-color 600000s 0s, color 600000s 0s;
+}
+
+/* Ordinateur : les fenêtres (modales) restent dans la colonne de l'application */
+@media (min-width: 768px) {
+  ion-modal {
+    --width: 100%;
+    --max-width: var(--app-max-width);
+  }
+}
+
+/* Barre d'onglets : l'onglet actif est orange (couleur d'accent) */
+ion-tab-bar,
+ion-tab-button {
+  --color-selected: var(--ion-color-tertiary);
+}
+
+ion-segment-button {
+  --color-checked: var(--ion-color-tertiary);
+  --indicator-color: var(--ion-color-tertiary);
+}
+
+/* Alertes (y compris les listes de sélection) : boutons et cases en orange.
+   Bloc facultatif : supprime-le pour garder les couleurs par défaut d'Ionic. */
+ion-alert {
+  --ion-color-primary: var(--ion-color-tertiary);
+  --ion-color-primary-rgb: 249, 115, 22;
 }

@@ -5,7 +5,7 @@ import {
   IonContent, IonIcon, IonInput, IonPage, IonText,
   useIonAlert, useIonLoading,
 } from "@ionic/react";
-import { filmOutline, logoGoogle } from "ionicons/icons";
+import { logoGoogle } from "ionicons/icons";
 import PrimaryButton from "../../components/PrimaryButton";
 import {
   loginUser, loginWithGoogle, resetPassword, getAuthErrorMessage,
@@ -85,9 +85,12 @@ const Login = () => {
     <IonPage>
       <IonContent fullscreen>
         <div className="page-center">
-          <div style={{ textAlign: "center" }}>
-            <IonIcon icon={filmOutline} color="tertiary" style={{ fontSize: 48 }} />
-            <h2 style={{ margin: 0 }}>MovieMatch</h2>
+          <div style={{ textAlign: "center", marginBottom: 8 }}>
+            <img
+              src="/logo.png"
+              alt="MovieMatch"
+              style={{ width: 112, height: 112, borderRadius: 26, boxShadow: "0 8px 24px rgba(0,0,0,0.18)" }}
+            />
           </div>
 
           <h2 className="auth-title">Welcome Back!</h2>

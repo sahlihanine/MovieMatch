@@ -59,6 +59,7 @@ const Register = () => {
       </IonHeader>
 
       <IonContent fullscreen className="ion-padding">
+        <img src="/logo.png" alt="MovieMatch" style={{ width: 64, height: 64, borderRadius: 16, marginBottom: 8 }} />
         <h2 className="auth-title">Create Account</h2>
         <p className="auth-subtitle">Join MovieMatch and start your journey</p>
 
