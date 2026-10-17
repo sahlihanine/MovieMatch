@@ -48,7 +48,12 @@ const Home = () => {
     <IonPage>
       <IonHeader className="ion-no-border">
         <IonToolbar>
-          <IonTitle>MovieMatch</IonTitle>
+          <IonTitle>
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <img src="/logo.png" alt="" style={{ width: 30, height: 30, borderRadius: 8 }} />
+              MovieMatch
+            </div>
+          </IonTitle>
         </IonToolbar>
         <IonToolbar>
           <IonSearchbar

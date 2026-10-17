@@ -5,8 +5,7 @@ import {
   IonSpinner, IonTitle, IonToolbar, useIonAlert, useIonViewWillEnter,
 } from "@ionic/react";
 import {
-  addCircleOutline, createOutline, heartOutline, helpCircleOutline, listOutline,
-  logOutOutline, shieldCheckmarkOutline,
+  createOutline, heartOutline, helpCircleOutline, listOutline, logOutOutline,
 } from "ionicons/icons";
 import EditProfileModal from "../../components/EditProfileModal";
 import UserAvatar from "../../components/UserAvatar";
@@ -14,11 +13,15 @@ import { useAuth } from "../../hooks/useAuth";
 import { usePlaylists } from "../../hooks/usePlaylists";
 import { logoutUser } from "../../services/authService";
 import { findMatches } from "../../services/matchService";
-import { ROLES } from "../../utils/constants";
 
-const Stat = ({ value, label }) => (
-  <div style={{ textAlign: "center", flex: 1 }}>
-    <div style={{ fontSize: 22, fontWeight: 700 }}>{value}</div>
+const Stat = ({ value, label, divider }) => (
+  <div
+    style={{
+      textAlign: "center", flex: 1, padding: "4px 0",
+      borderRight: divider ? "1px solid rgba(31,41,55,0.08)" : "none",
+    }}
+  >
+    <div style={{ fontSize: 22, fontWeight: 700, color: "var(--ion-color-tertiary)" }}>{value}</div>
     <div className="caption">{label}</div>
   </div>
 );
@@ -72,7 +75,6 @@ const Profile = () => {
     );
   }
 
-  const isAdmin = profile.role === ROLES.ADMIN;
   const fullName = `${profile.firstName} ${profile.lastName}`;
 
   const items = [
@@ -80,46 +82,90 @@ const Profile = () => {
     { icon: heartOutline, label: "My Matches", action: () => history.push("/app/match") },
     { icon: createOutline, label: "Edit profile", action: () => setEditOpen(true) },
     { icon: helpCircleOutline, label: "Help & Support", action: showHelp },
-    ...(isAdmin
-      ? [
-          { icon: shieldCheckmarkOutline, label: "Admin: manage users", action: () => history.push("/admin/users") },
-          { icon: addCircleOutline, label: "Admin: add movie", action: () => history.push("/admin/add-movie") },
-        ]
-      : []),
-    { icon: logOutOutline, label: "Log Out", action: confirmLogout, color: "danger" },
+    { icon: logOutOutline, label: "Log Out", action: confirmLogout, danger: true },
   ];
 
   return (
     <IonPage>
       <IonHeader className="ion-no-border">
-        <IonToolbar>
+        <IonToolbar style={{ "--background": "var(--ion-color-tertiary)", "--color": "#fff" }}>
           <IonTitle>Profile</IonTitle>
         </IonToolbar>
       </IonHeader>
 
       <IonContent>
-        <div style={{ textAlign: "center", padding: "16px 16px 8px" }}>
-          <div style={{ display: "inline-block" }}>
+        {/* bandeau orange avec la photo */}
+        <div
+          style={{
+            background: "linear-gradient(180deg, var(--ion-color-tertiary) 0%, var(--ion-color-secondary) 100%)",
+            padding: "8px 16px 64px",
+            textAlign: "center",
+            color: "#fff",
+          }}
+        >
+          <div
+            style={{
+              display: "inline-block", borderRadius: "50%", overflow: "hidden",
+              border: "4px solid #fff", background: "#fff",
+              boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
+            }}
+          >
             <UserAvatar src={profile.photoURL} name={fullName} size={96} />
           </div>
-          <h2 style={{ margin: "12px 0 0" }}>{fullName}</h2>
-          <p className="caption" style={{ margin: 0 }}>
-            {profile.age ? `${profile.age} years old` : ""}
-            {isAdmin && (profile.age ? " · Admin" : "Admin")}
-          </p>
+          <h2 style={{ margin: "12px 0 0", color: "#fff" }}>{fullName}</h2>
+          {profile.age ? (
+            <p style={{ margin: "2px 0 0", fontSize: 14, color: "rgba(255,255,255,0.9)" }}>
+              {profile.age} years old
+            </p>
+          ) : null}
         </div>
 
-        <div style={{ display: "flex", padding: "12px 16px 20px" }}>
-          <Stat value={profile.favoriteMovieIds?.length ?? 0} label="Favorites" />
-          <Stat value={playlists.length} label="Playlists" />
+        {/* statistiques : carte blanche qui chevauche le bandeau */}
+        <div
+          style={{
+            display: "flex", background: "#fff", borderRadius: 16,
+            margin: "-40px 16px 0", padding: "14px 4px",
+            boxShadow: "0 6px 20px rgba(31,41,55,0.10)",
+          }}
+        >
+          <Stat value={profile.favoriteMovieIds?.length ?? 0} label="Favorites" divider />
+          <Stat value={playlists.length} label="Playlists" divider />
           <Stat value={matchCount ?? "–"} label="Matches" />
         </div>
 
-        <IonList lines="full">
-          {items.map((it) => (
-            <IonItem key={it.label} button detail onClick={it.action}>
-              <IonIcon slot="start" icon={it.icon} color={it.color} />
-              <IonLabel color={it.color}>{it.label}</IonLabel>
+        {/* menu */}
+        <IonList
+          lines="none"
+          style={{
+            margin: "16px 16px 24px", padding: 0, borderRadius: 16, overflow: "hidden",
+            boxShadow: "0 2px 12px rgba(31,41,55,0.06)",
+          }}
+        >
+          {items.map((it, i) => (
+            <IonItem
+              key={it.label}
+              button
+              detail
+              lines={i === items.length - 1 ? "none" : "full"}
+              onClick={it.action}
+            >
+              <div
+                slot="start"
+                style={{
+                  width: 38, height: 38, borderRadius: 12, display: "grid", placeItems: "center",
+                  marginInlineEnd: 14,
+                  background: it.danger ? "rgba(235,68,90,0.12)" : "rgba(249,115,22,0.12)",
+                }}
+              >
+                <IonIcon
+                  icon={it.icon}
+                  style={{
+                    fontSize: 20,
+                    color: it.danger ? "var(--ion-color-danger)" : "var(--ion-color-tertiary)",
+                  }}
+                />
+              </div>
+              <IonLabel color={it.danger ? "danger" : undefined}>{it.label}</IonLabel>
             </IonItem>
           ))}
         </IonList>

@@ -52,3 +52,58 @@ body, p { font-size: 16px; font-weight: 400; }
     box-shadow: 0 0 48px rgba(31, 41, 55, 0.14);
   }
 }
+
+/* Barres de défilement masquées (le défilement reste possible au doigt, à la molette et au pavé tactile) */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+*::-webkit-scrollbar {
+  display: none;
+}
+/* le contenu des pages Ionic défile dans une zone interne, à cibler séparément */
+ion-content::part(scroll) {
+  scrollbar-width: none;
+}
+ion-content::part(scroll)::-webkit-scrollbar {
+  display: none;
+}
+
+/* Champs préremplis par le navigateur : on supprime le fond gris-bleu */
+ion-input input:-webkit-autofill,
+ion-input input:-webkit-autofill:hover,
+ion-input input:-webkit-autofill:focus,
+ion-input input:-webkit-autofill:active,
+ion-textarea textarea:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px var(--ion-background-color) inset !important;
+  box-shadow: 0 0 0 1000px var(--ion-background-color) inset !important;
+  -webkit-text-fill-color: var(--ion-text-color) !important;
+  caret-color: var(--ion-text-color);
+  transition: background-color 600000s 0s, color 600000s 0s;
+}
+
+/* Ordinateur : les fenêtres (modales) restent dans la colonne de l'application */
+@media (min-width: 768px) {
+  ion-modal {
+    --width: 100%;
+    --max-width: var(--app-max-width);
+  }
+}
+
+/* Barre d'onglets : l'onglet actif est orange (couleur d'accent) */
+ion-tab-bar,
+ion-tab-button {
+  --color-selected: var(--ion-color-tertiary);
+}
+
+ion-segment-button {
+  --color-checked: var(--ion-color-tertiary);
+  --indicator-color: var(--ion-color-tertiary);
+}
+
+/* Alertes (y compris les listes de sélection) : boutons et cases en orange.
+   Bloc facultatif : supprime-le pour garder les couleurs par défaut d'Ionic. */
+ion-alert {
+  --ion-color-primary: var(--ion-color-tertiary);
+  --ion-color-primary-rgb: 249, 115, 22;
+}

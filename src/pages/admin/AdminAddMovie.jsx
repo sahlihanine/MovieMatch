@@ -73,8 +73,9 @@ const AdminAddMovie = () => {
         <IonInput className="form-field" label="Release date" labelPlacement="floating" fill="outline"
           type="date" value={form.releaseDate} onIonInput={set("releaseDate")} />
 
+        {/* interface "alert" : la liste s'ouvre au centre de la colonne, sans calcul de position */}
         <IonSelect className="form-field" label="Genre" labelPlacement="floating" fill="outline"
-          interface="popover" placeholder="Select a genre"
+          interface="alert" interfaceOptions={{ header: "Genre" }} placeholder="Select a genre"
           value={form.genre} onIonChange={(e) => setForm({ ...form, genre: e.detail.value })}>
           {GENRE_LIST.map((g) => (
             <IonSelectOption key={g} value={g}>{g}</IonSelectOption>
